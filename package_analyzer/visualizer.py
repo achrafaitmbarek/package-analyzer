@@ -37,25 +37,23 @@ def create_dependency_graph(package_name: str, max_depth: int = 2) -> Digraph:
             data = fetch_package_info(pkg_name)
             requires_dist = data["info"].get("requires_dist", [])
 
-            # Add the current package node
             dot.node(pkg_name, f"{pkg_name}\n{data['info'].get('version', 'unknown')}")
 
             if requires_dist:
                 for dep in requires_dist:
                     if dep:
-                        # Extract base package name without version specifiers
+
                         dep_name = dep.split(" ")[0].split(";")[0].strip()
                         if dep_name:
-                            # Add dependency node and edge
+
                             dot.edge(pkg_name, dep_name)
                             if dep_name not in visited:
                                 add_dependencies(dep_name, current_depth + 1)
 
         except requests.exceptions.RequestException:
-            # If we can't fetch package info, just add the node without dependencies
+
             dot.node(pkg_name, pkg_name, fillcolor="lightgray")
 
-    # Start building the graph from the root package
     add_dependencies(package_name)
     return dot
 
