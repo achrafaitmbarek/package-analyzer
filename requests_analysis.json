@@ -1,0 +1,24 @@
+{
+  "name": "requests",
+  "version": "2.32.3",
+  "author": "Kenneth Reitz",
+  "license": "Apache-2.0",
+  "description": "Python HTTP for Humans.",
+  "homepage": "https://requests.readthedocs.io",
+  "documentation": null,
+  "requires_python": ">=3.8",
+  "dependencies": [
+    "charset-normalizer<4,>=2",
+    "idna<4,>=2.5",
+    "urllib3<3,>=1.21.1",
+    "certifi>=2017.4.17",
+    "PySocks!=1.5.7,>=1.5.6",
+    "chardet<6,>=3.0.2"
+  ],
+  "installation_guide": "pip install {package_name}",
+  "latest_releases": [],
+  "project_stats": {},
+  "community_info": {
+    "maintainers": []
+  }
+}
