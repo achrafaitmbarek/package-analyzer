@@ -18,10 +18,8 @@ def create_dependency_graph(package_name: str, max_depth: int = 2) -> Digraph:
     dot = Digraph(comment=f"Dependency Graph for {package_name}")
     dot.attr(rankdir="LR")
 
-    # Set node styles
     dot.attr("node", shape="box", style="rounded,filled", fillcolor="lightblue")
 
-    # Track visited packages to avoid cycles
     visited = set()
 
     def fetch_package_info(pkg_name: str) -> Dict[str, Any]:

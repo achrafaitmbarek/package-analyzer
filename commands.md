@@ -21,7 +21,6 @@ visualizer.py
 This module generates dependency graphs using Graphviz. It visualizes package dependency relationships in various formats (PNG, SVG, PDF).
 
 Configuration Files:
-- pyproject.toml: Defines project metadata and build system requirements
 - requirements.txt: Lists all project dependencies with their versions
 - django_analysis.json and django_dependencies: Example output files from previous analyses
 
