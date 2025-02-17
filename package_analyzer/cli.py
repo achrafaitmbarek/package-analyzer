@@ -5,9 +5,11 @@ from . import scraper
 from . import utils
 from . import visualizer
 from .security_analyzer import SecurityAnalyzer
+from .issue_tracker import IssueTracker, display_issue_analysis
 
 console = Console()
 security_analyzer = SecurityAnalyzer()
+issue_tracker = IssueTracker()
 
 
 def main(
@@ -31,8 +33,9 @@ def main(
     security: bool = typer.Option(
         False, "--security", help="Perform security analysis"
     ),
+    issues: bool = typer.Option(False, "--issues", "-i", help="Analyze GitHub issues"),
 ):
-    """Analyze dependencies and security for a Python package."""
+    """Analyze dependencies, security, and issues for a Python package."""
     try:
         console.print(f"[green]Analyzing package: {package_name}...[/green]")
         package_data = scraper.fetch_package_info(package_name, version)
@@ -46,6 +49,11 @@ def main(
             console.print(f"\n[green]Performing security analysis...[/green]")
             security_data = security_analyzer.analyze_package(package_name, version)
             utils.display_security_report(security_data)
+
+        if issues:
+            console.print(f"\n[green]Analyzing GitHub issues...[/green]")
+            issue_data = issue_tracker.analyze_issues(package_name)
+            display_issue_analysis(issue_data)
 
         if graph:
             console.print(f"\n[green]Generating dependency graph...[/green]")
