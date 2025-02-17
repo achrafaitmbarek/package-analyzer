@@ -42,7 +42,6 @@ def display_table(data: Dict[str, Any]):
 
 def display_security_report(security_data: Dict[str, Any]):
     """Display security analysis results."""
-    # Summary Panel
     summary = Text()
     summary.append(
         f"Total Vulnerabilities: {security_data['total_vulnerabilities']}\n\n"
@@ -60,7 +59,6 @@ def display_security_report(security_data: Dict[str, Any]):
 
     console.print(Panel(summary, title="Security Summary"))
 
-    # Vulnerabilities Table
     if security_data["vulnerabilities"]:
         vuln_table = Table(title="\nVulnerability Details", show_header=True)
         vuln_table.add_column("ID", style="cyan")

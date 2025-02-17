@@ -60,7 +60,6 @@ class SecurityAnalyzer:
     ) -> str:
         severity_score = 0
 
-        # Check CVSS score
         database_specific = vulnerability.get("database_specific", {})
         if isinstance(database_specific, dict):
             cvss_score = database_specific.get("cvss_score")
@@ -71,29 +70,24 @@ class SecurityAnalyzer:
                 except (ValueError, TypeError):
                     pass
 
-        # Analyze vulnerability description and details
         description = (
             vulnerability.get("summary", "").lower()
             + str(vulnerability.get("details", "")).lower()
         )
 
-        # Check for critical keywords in description
         for keyword in self.critical_keywords:
             if keyword in description:
                 severity_score += 2
 
-        # Increase severity for security-critical packages
         if package_name.lower() in self.security_critical_packages:
             severity_score += 1
 
-        # Check for specific vulnerability types
         if any(
             kw in description
             for kw in ["cryptographic", "encryption", "authentication"]
         ):
             severity_score += 1.5
 
-        # Evaluate impact information
         affected = vulnerability.get("affected", [])
         if affected:
             for entry in affected:
@@ -102,7 +96,6 @@ class SecurityAnalyzer:
                     if ecosystem_specific.get("affects_security", False):
                         severity_score += 2
 
-        # Map final score to severity levels
         if severity_score >= 9:
             return "CRITICAL"
         elif severity_score >= 7:
@@ -127,7 +120,6 @@ class SecurityAnalyzer:
             severity = self._determine_severity(vuln, package_name)
             processed_data["severity_counts"][severity] += 1
 
-            # Extract fixed versions and references
             fixed_versions = []
             for affected in vuln.get("affected", []):
                 for range_info in affected.get("ranges", []):
@@ -135,8 +127,6 @@ class SecurityAnalyzer:
                         for event in range_info.get("events", []):
                             if "fixed" in event:
                                 fixed_versions.append(event["fixed"])
-
-            # Process vulnerability details
             vuln_info = {
                 "id": vuln.get("id", "Unknown"),
                 "severity": severity,
@@ -153,7 +143,6 @@ class SecurityAnalyzer:
 
             processed_data["vulnerabilities"].append(vuln_info)
 
-        # Sort vulnerabilities by severity
         severity_order = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
         processed_data["vulnerabilities"].sort(
             key=lambda x: severity_order[x["severity"]]

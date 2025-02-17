@@ -16,13 +16,10 @@ def fetch_package_info(
     Returns:
         Dict containing package information
     """
-    # Fetch data from PyPI API
     api_data = _fetch_api_data(package_name, version)
 
-    # Enhance with web-scraped data
     web_data = _scrape_pypi_page(package_name, version)
 
-    # Combine the data
     return {**api_data, **web_data}
 
 
@@ -77,7 +74,7 @@ def _extract_latest_releases(soup: BeautifulSoup) -> list:
     """Extract recent release information."""
     releases = []
     release_divs = soup.find_all("a", {"class": "release__card"})
-    for release in release_divs[:5]:  # Get last 5 releases
+    for release in release_divs[:5]:
         version = release.find("p", {"class": "release__version"})
         if version:
             releases.append(version.text.strip())
@@ -101,7 +98,6 @@ def _extract_community_info(soup: BeautifulSoup) -> Dict[str, Any]:
     """Extract community-related information."""
     info = {}
 
-    # Extract maintainers
     maintainers = []
     maintainers_div = soup.find("div", {"class": "maintainers"})
     if maintainers_div:

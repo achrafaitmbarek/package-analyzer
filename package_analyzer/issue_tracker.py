@@ -27,7 +27,6 @@ class IssueTracker:
 
         self.console.print(f"[green]Found repository: {repo_info['url']}[/green]")
 
-        # Get repository main page for overall stats
         main_stats = self._get_repo_stats(repo_info["url"])
 
         return {
@@ -71,12 +70,10 @@ class IssueTracker:
 
             stats = {"open_issues": 0, "pull_requests": 0}
 
-            # Find issues count
             issues_counter = soup.find("span", id="issues-repo-tab-count")
             if issues_counter and "title" in issues_counter.attrs:
                 stats["open_issues"] = int(issues_counter["title"])
 
-            # Find pull requests count
             pr_counter = soup.find("span", id="pull-requests-repo-tab-count")
             if pr_counter and "title" in pr_counter.attrs:
                 stats["pull_requests"] = int(pr_counter["title"])
@@ -171,19 +168,16 @@ def display_issue_analysis(data: Dict[str, Any]) -> None:
         console.print(f"\n[red]Error: {data['error']}[/red]")
         return
 
-    # Display repository information
     repo = data["repository"]
     console.print(f"\n[bold cyan]Repository Information[/bold cyan]")
     console.print(f"URL: {repo['url']}")
     console.print(f"Found via: {repo['source']}")
 
-    # Display Summary
     summary = data["summary"]
     console.print(f"\n[bold cyan]Repository Statistics[/bold cyan]")
     console.print(f"Open Issues: {summary['open_issues']}")
     console.print(f"Pull Requests: {summary['pull_requests']}")
 
-    # Display Recent Issues
     if data["recent_issues"]:
         console.print("\n[bold cyan]Recent Issues[/bold cyan]")
         recent_table = Table(show_header=True)
@@ -193,7 +187,6 @@ def display_issue_analysis(data: Dict[str, Any]) -> None:
             recent_table.add_row(issue["title"])
         console.print(recent_table)
 
-    # Display Top Issues
     if data["top_issues"]:
         console.print("\n[bold cyan]Most Discussed Issues[/bold cyan]")
         top_table = Table(show_header=True)
